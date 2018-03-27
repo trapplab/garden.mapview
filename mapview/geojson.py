@@ -287,8 +287,8 @@ class GeoJsonMapLayer(MapLayer):
             self.g_canvas_polygon.clear()
             self._geojson_part(geojson, geotype="Polygon")
         # print "Reload geojson (LineString)"
-        self.canvas_line.clear()
-        self._geojson_part(geojson, geotype="LineString")
+        #self.canvas_line.clear()
+        #self._geojson_part(geojson, geotype="LineString")
 
     def on_source(self, instance, value):
         if value.startswith("http://") or value.startswith("https://"):
@@ -341,6 +341,9 @@ class GeoJsonMapLayer(MapLayer):
             tess.tesselate(WINDING_ODD, TYPE_POLYGONS)
 
             color = self._get_color_from(properties.get("color", "FF000088"))
+            opacity = properties.get("opacity")
+            if opacity:
+                color[3] = opacity
             graphics.append(Color(*color))
             for vertices, indices in tess.meshes:
                 graphics.append(
